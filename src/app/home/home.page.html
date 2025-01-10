@@ -14,6 +14,29 @@
   </ion-header>
 
   <div id="container">
-    <strong>Put your Bluetooth code here!</strong>
+    <ion-row>
+      <ion-label id="title">Bluetooth Devices</ion-label>
+      <div class="scanner">
+        <ion-button *ngIf="!isScanning" fill="clear" [disabled]="isScanning" (click)="scanDevices()">
+          <ion-icon size="large" name="refresh" style="color: black;"></ion-icon>
+        </ion-button>
+        <ion-spinner *ngIf="isScanning" color="primary"></ion-spinner>
+      </div>
+    </ion-row>
+    
+    <ion-list>
+      <ion-item *ngFor="let device of devices">
+        <ion-label>
+          <h2>{{ device.name || 'Unknown Device' }}</h2>
+          <p>{{ device.id }}</p>
+        </ion-label>
+        <ion-label *ngIf="device.isConnected" class="connected">connected</ion-label>
+        <ion-button (click)="connectDevice(device.id)" style="margin-right: 20px;">{{device.isConnected ? 'Disconnect' : 'Connect'}}</ion-button>
+        <ion-button *ngIf="device.isConnected" (click)="print(device.id)">
+          <ion-icon name="print" style="color: #fff;"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+
   </div>
 </ion-content>
